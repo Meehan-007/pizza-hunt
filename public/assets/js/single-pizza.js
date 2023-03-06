@@ -9,6 +9,29 @@ const $newCommentForm = document.querySelector('#new-comment-form');
 
 let pizzaId;
 
+function getPizza() {
+  // get id of pizza
+  const searchParams = new URLSearchParams(document.location.search.substring(1));
+  const pizzaId = searchParams.get('id');
+
+  // get pizzaInfo
+  fetch(`/api/pizzas/${pizzaId}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error({ message: 'Something went wrong!' });
+      }
+
+      return response.json();
+    })
+    .then(printPizza)
+    .catch(err => {
+      console.log(err);
+      alert('Cannot find a pizza with this id! Taking you back.');
+      window.history.back();
+    });
+}
+
+
 function printPizza(pizzaData) {
   console.log(pizzaData);
 
@@ -58,7 +81,6 @@ function printComment(comment) {
           <label for="reply">Leave a Reply</label>
           <textarea class="form-textarea form-input"  name="reply" required></textarea>
         </div>
-
         <button class="mt-2 btn display-block w-100">Add Reply</button>
       </form>
   `;
@@ -87,6 +109,28 @@ function handleNewCommentSubmit(event) {
   }
 
   const formData = { commentBody, writtenBy };
+
+  fetch(`/api/comments/${pizzaId}`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
+      response.json();
+    })
+    .then(commentResponse => {
+      console.log(commentResponse);
+      location.reload();
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }
 
 function handleNewReplySubmit(event) {
@@ -134,5 +178,11 @@ $backBtn.addEventListener('click', function() {
   window.history.back();
 });
 
+$backBtn.addEventListener('click', function() {
+  window.history.back();
+});
+
 $newCommentForm.addEventListener('submit', handleNewCommentSubmit);
 $commentSection.addEventListener('submit', handleNewReplySubmit);
+
+getPizza()
