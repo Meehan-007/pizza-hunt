@@ -4,7 +4,7 @@
 This application is a parody app that satirizes the idea of topic-based social media apps. Pizza Hunt allows users to unleash their creativity by designing unconventional pizzas with fun names and sharing them with other users. In this way, users can engage in lighthearted conversations about their pizza creations and have fun exploring the endless possibilities of this beloved dish. The source code is available to everyone under the standard MIT license.
 
 ## Deployment:
-https://deep-thoughts-are-real.herokuapp.com/
+https://pizza-hunt17.herokuapp.com/
 
 ## Installiation:
 To use the app, simply clone the GitHub repository and run "npm install" followed by "npm start" to start the server.
